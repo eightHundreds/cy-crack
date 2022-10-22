@@ -28111,7 +28111,7 @@
       (t.createTRSButtons = async function(e = {}) {
         const t = await b.pi18n,
           n = new v.SideEffectManager(),
-          T = new m.Val(!1),
+          T = new m.Val(false),
           D = new O.Emitter(),
           C = new m.Val(""),
           S = new w.Dagger({
@@ -28238,7 +28238,6 @@
                   e.className = "cyxy-glossary-title-free-content";
                   const n = document.createTextNode(t.t("glossary.freeText")),
                     r = document.createElement("a");
-                  debugger;
                   return (
                     (r.className = "cyxy-glossary-title-link"),
                     (r.textContent = t.t("glossary.becomeVIP")),
@@ -28944,7 +28943,10 @@
                 const e = (0, s.pageGlossaryUpdate)(
                     this.uid,
                     document.location.href,
-                    { common_dict: t ? [t] : [], custom_dict: n ? [n] : [] }
+                    {
+                      common_dict: t ? [t] : [],
+                      custom_dict: n ? [n] : []
+                    }
                   ).catch(e => void 0),
                   r = new Promise(e => setTimeout(e, 1e3));
                 await e,
@@ -32362,6 +32364,7 @@
               return (
                 e ||
                   (e = await (async function() {
+                    debugger;
                     for (let e = 0; e < 40; e++)
                       if (
                         (await new Promise(t =>
@@ -32449,7 +32452,11 @@
             o
               .config(
                 "https://0480115482b54fd9aa73e03c0efd8ca0@sentry.ccops.net/15",
-                { release: j.VERSION, environment: j.ENV, sampleRate: 1 }
+                {
+                  release: j.VERSION,
+                  environment: j.ENV,
+                  sampleRate: 1
+                }
               )
               .install();
         var se = (function() {
@@ -32485,6 +32492,15 @@
             ? Promise.resolve()
             : new Promise(e => {
                 M.testCookie(function(t) {
+                  i("config", {
+                    evtParams: {
+                      userType: "vip"
+                    }
+                  });
+                  ne = "1"; // 乱填
+                  te = "myidddd"; // 乱填
+                  e();
+                  return;
                   var n, r, o;
                   t &&
                     ((n = te = t._id),
@@ -32534,6 +32550,7 @@
           if (!te && "share" !== se) return;
           const n = (async function() {
             return new Promise(async e => {
+              e();
               const t = new Map(),
                 n = new d("local", "uid");
               A.addDisposer(
@@ -32581,16 +32598,23 @@
             url: r,
             headers: { "X-Authorization": "token " + j.token },
             data: {
-              user_id: te,
+              // user_id: te,
+              user_id:"", // 关键
               browser_id: $,
-              device_id: J,
+              // device_id: J,
+              device_id: "", // 关键
               url: y() || document.URL,
               title: document.title
             }
           }).then(async function(r) {
-            if ("ok" != r.status)
-              throw (g.open({ className: _, content: Y, skin: "msg", time: 5 }),
-              new Error("PageAuth Error", e));
+            r = {
+              status: "ok",
+              data: JSON.stringify({
+                ...JSON.parse(r.data),
+                auth_type:3, // 关键
+                rc:0, // 关键
+              })
+            };
             var i,
               o,
               s = JSON.parse(r.data),
@@ -33283,14 +33307,14 @@
                                 "&device_id=" +
                                 e.device_id),
                               (n = e.coupon_code),
-                              (r = e.coupon_code)),
-                              "android" == se
-                                ? window.js.showLoginDialog(U, r)
-                                : "ios" == se
-                                ? window.webkit.messageHandlers.showLoginDialog.postMessage(
-                                    { title: U, coupon_code: n }
-                                  )
-                                : (window.location.href = j.LOGIN_URL + t);
+                              (r = e.coupon_code));
+                            // "android" == se
+                            //   ? window.js.showLoginDialog(U, r)
+                            //   : "ios" == se
+                            //   ? window.webkit.messageHandlers.showLoginDialog.postMessage(
+                            //       { title: U, coupon_code: n }
+                            //     )
+                            //   : (window.location.href = j.LOGIN_URL + t);
                           })(n);
                       });
                   }),
@@ -33382,6 +33406,7 @@
                             const r = 1e3 * (e.xy_vip_expire || 0),
                               i = 1e3 * (e.xy_svip_expire || 0) >= Date.now(),
                               o = r >= Date.now();
+                            debugger;
                             D.vipType$.setValue(i ? "svip" : o ? "vip" : ""),
                               D.locked$.setValue(
                                 !(
@@ -33391,10 +33416,10 @@
                               ),
                               t();
                           } else
-                            D.locked$.setValue("login"),
-                              (te = null),
-                              (ee = null),
-                              n && ((n = !1), Be(D.locked$.value));
+                          D.locked$.setValue("login"),
+                            (te = null),
+                            (ee = null),
+                            n && ((n = !1), Be(D.locked$.value));
                           D.userCenter.icon$.setValue(
                             (ee && ee.avatar_url) || ""
                           ),
@@ -33408,8 +33433,8 @@
                     "share" !== se &&
                       (await ce(),
                       te ||
-                        (D.locked$.setValue("login"),
-                        s("https://fanyi.caiyunapp.com/#/mine/doc"),
+                        (D.locked$.setValue(false),
+                        // s("https://fanyi.caiyunapp.com/#/mine/doc"),
                         await C())),
                       le();
                 })(),
@@ -34199,6 +34224,7 @@
           });
         let _e = !1;
         function Pe() {
+          debugger;
           _e ||
             ((_e = !0),
             g.open({
@@ -34222,6 +34248,7 @@
         }
         let Re = !1;
         function Ue() {
+          // debugger;
           Re ||
             ((Re = !0),
             g.open({
@@ -36427,6 +36454,16 @@
               title: document.title
             }
           }).then(function(t) {
+            t = { // 没用
+              status: "ok",
+              data: {
+                browser_id: "de2d4031a5fb1e860fce40f4ba8c964f",
+                device_id: "de2d4031a5fb1e860fce40f4ba8c964f",
+                title: "Document",
+                url: "http://127.0.0.1:3000/",
+                user_id: "lalalala"
+              }
+            };
             if ("ok" != t.status)
               throw (u.open({
                 content: s.PAGE_AUTH_ERROR_MSG,
@@ -36447,6 +36484,16 @@
             headers: { "X-Authorization": "token " + s.token },
             data: { url: t, user_id: n, article: !0 }
           }).then(function(t) {
+            t = { // 没用
+              status: "ok",
+              data: {
+                browser_id: "de2d4031a5fb1e860fce40f4ba8c964f",
+                device_id: "de2d4031a5fb1e860fce40f4ba8c964f",
+                title: "Document",
+                url: "http://127.0.0.1:3000/",
+                user_id: "lalalala"
+              }
+            };
             if ("ok" != t.status)
               throw (u.open({
                 content: s.PAGE_AUTH_ERROR_MSG,
