@@ -32898,7 +32898,7 @@
                         trans_type: c,
                         request_id: te || J || $ || "web-translate",
                         url: document.URL,
-                        page_id: K,
+                        page_id: K || 1234,
                         user_id: te,
                         replaced: !0,
                         cached: j.CACHED
